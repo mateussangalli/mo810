@@ -90,8 +90,8 @@ del texts
 del labels
 del sequences
 
-loss_train = np.array([0]*(num_epochs+1), dtype=np.float32)
-acc_train = np.array([0]*(num_epochs+1), dtype=np.float32)
+loss_train = list()
+acc_train = list()
 
 loss_val = list()
 acc_val = list()
