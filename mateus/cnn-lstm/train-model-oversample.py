@@ -102,8 +102,8 @@ for epoch, x_train, y_train in input_gen(folder,train_filenames,train_numlines,t
             callbacks=[tb_callback], shuffle=True)
     if (epoch+1) % 5 == 0:
         loss, acc = model.evaluate(x_train, y_train, verbose=1)
-        print('train loss = %.3f' % loss_train[epoch])
-        print('train acc = %.3f' % acc_train[epoch])
+        print('train loss = %.3f' % loss)
+        print('train acc = %.3f' % acc)
         loss_train.append(loss)
         acc_train.append(acc)
         loss, acc = model.evaluate(x_val, y_val, verbose=1)
