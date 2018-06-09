@@ -88,16 +88,15 @@ with open(tb_folder+'/'+emb_meta,'w') as emb:
 
 sequence_input = Input(shape=(MAX_SEQUENCE_LENGTH,), dtype='int32')
 embedded_sequences = embedding_layer(sequence_input)
+l_dropout = Dropout(0.05)(embedded_sequences)
 
-l_cov1 = Conv1D(128, 5, activation='relu', padding='valid')(embedded_sequences)
-l_dropout1 = Dropout(0.1)(l_cov1)
-l_pool1 = MaxPooling1D(strides=2)(l_dropout1)
+l_cov1 = Conv1D(128, 5, activation='relu', padding='valid')(l_dropout)
+l_pool1 = MaxPooling1D(strides=2)(l_cov1)
 
 l_cov2 = Conv1D(128, 5, activation='relu', padding='valid')(l_pool1)
-l_dropout2 = Dropout(0.1)(l_cov2)
-l_pool2 = MaxPooling1D(strides=2)(l_dropout2)
+l_pool2 = MaxPooling1D(strides=2)(l_cov2)
 
-l_lstm = LSTM(128, return_sequences=False, recurrent_activation='hard_sigmoid', dropout=0.1)(l_pool2)
+l_lstm = LSTM(128, return_sequences=False, recurrent_activation='hard_sigmoid')(l_pool2)
 
 preds = Dense(5, activation='softmax')(l_lstm)
 

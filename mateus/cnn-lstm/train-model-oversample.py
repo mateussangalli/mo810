@@ -90,8 +90,8 @@ del texts
 del labels
 del sequences
 
-loss_train = np.array([0]*num_epochs, dtype=np.float32)
-acc_train = np.array([0]*num_epochs, dtype=np.float32)
+loss_train = list()
+acc_train = list()
 
 loss_val = list()
 acc_val = list()
@@ -100,19 +100,23 @@ for epoch, x_train, y_train in input_gen(folder,train_filenames,train_numlines,t
     model.fit(x_train, y_train,initial_epoch=epoch,
             epochs=epoch+1, batch_size=32,
             callbacks=[tb_callback], shuffle=True)
-    loss_train[epoch], acc_train[epoch] = model.evaluate(x_train, y_train, verbose=1)
-    print('loss = %.3f' % loss_train[epoch])
-    print('acc = %.3f' % acc_train[epoch])
     if (epoch+1) % 5 == 0:
-        # save model
+        loss, acc = model.evaluate(x_train, y_train, verbose=1)
+        print('train loss = %.3f' % loss_train[epoch])
+        print('train acc = %.3f' % acc_train[epoch])
+        loss_train.append(loss)
+        acc_train.append(acc)
         loss, acc = model.evaluate(x_val, y_val, verbose=1)
-        print('loss = %.3f' % loss)
-        print('acc = %.3f' % acc)
+        print('val loss = %.3f' % loss)
+        print('val acc = %.3f' % acc)
         loss_val.append(loss)
         acc_val.append(acc)
+        # save checkpoint
         model.save('ckpt_%s.h5' % (epoch+1))
-        print('Saved model to disk')
+        print('Saved checkpoint to disk')
 
+loss_train = np.array(loss_train)
+acc_train = np.array(acc_train)
 loss_val = np.array(loss_val)
 acc_val = np.array(acc_val)
 
