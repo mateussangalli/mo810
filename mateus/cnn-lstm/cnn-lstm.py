@@ -96,7 +96,7 @@ l_pool1 = MaxPooling1D(strides=2)(l_cov1)
 l_cov2 = Conv1D(128, 5, activation='relu', padding='valid')(l_pool1)
 l_pool2 = MaxPooling1D(strides=2)(l_cov2)
 
-l_lstm = LSTM(128, return_sequences=False, recurrent_activation='hard_sigmoid')(l_pool2)
+l_lstm = LSTM(200, return_sequences=False, recurrent_activation='hard_sigmoid')(l_pool2)
 
 preds = Dense(5, activation='softmax')(l_lstm)
 
